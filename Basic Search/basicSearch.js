@@ -35,7 +35,7 @@ jQuery(document).ready(function handleDocumentReady (e) {
 			}
 	});
 	addRow();
-	
+	 
 });
 var compPromise = compoundID_compName_All("#loadingIcon");
 compPromise.done(function(data){
