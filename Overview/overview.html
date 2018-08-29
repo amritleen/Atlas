@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Atlas Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.1/c3.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.1/c3.css" rel="stylesheet">
+</head>
+<body>
+    <div id="loadingIcon" style="display: none">
+            <div class="wrapper" style= "height: 200px;width: 200px;">
+                <img src="/custom/common/xhr/gear.gif" />
+            </div>
+    </div>
+    <div id="numberDiv">
+        <div id="noCompDiv">
+            <label id="totalCompLabel" >Total number of Compounds </label>
+            <label id="noOfComp"></label>
+        </div>
+        <div id="noBacteriaDiv">
+            <label>Total number from Bacteria </label>
+            <label id="noOfBacteria"></label>
+            <img src="/custom/discover/overview/bacteria.jpg" alt="">
+        </div>
+        <div id="noFungusDiv">            
+                <label>Total number from Fungi </label>
+                <label id="noOfFungus"></label>
+                <img src="/custom/discover/overview/fungus.jpg" alt="">            
+        </div>
+    </div>
+    <h3>Top 50 Genera in Atlas</h3>
+    <div id="chartGenus"></div>
+    <h3>Top 50 Bacterial Genera in Atlas</h3>
+    <div id="chartBacteria"></div>
+    <h3>Top 50 Fungul Genera in Atlas</h3>
+    <div id="chartFungus"></div>
+    <div>
+        <h3>Compounds Per Year</h3>
+        <div id="compCountDiv"></div>
+    </div>
+    <h3 id="clustersH">CLUSTERS</h3>
+    <div id="clusterDataDiv">        
+            <div id="totalClustersDiv">
+                <label>Total number of clusters  </label>
+                <label id="noOfClusters"></label>
+            </div>
+            <div id="bigClusterDiv">
+                <label>Biggest Cluster ID </label>
+                <label id="biggestClusterID"></label>
+            </div>
+            <div id="noOfCompBigClusterDiv">
+                <label>Number of Compounds in biggest Cluster  </label>
+                <label id="biggestClusterCount"></label>
+            </div>        
+    </div>
+    <div id="chartCluster"></div>
+
+    <h3 id="nodesH">NODES</h3>
+    <div id="nodeDataDiv">        
+            <div id="totalNodesDiv">
+                <label>Total number of nodes  </label>
+                <label id="noOfNodes"></label>
+            </div>
+            <div id="bigNodeDiv">
+                <label>Biggest Node ID </label>
+                <label id="biggestNodeID"></label>
+            </div>
+            <div id="noOfCompBigNodeDiv">
+                <label>Number of Compounds in biggest Node  </label>
+                <label id="biggestNodeCount"></label>
+            </div>        
+    </div>
+    <div id="chartNode"></div>
+</body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+<script type="text/javascript" src="/custom/common/xhr/test.js"></script>
+<script type="text/javascript" src="/custom/discover/overview/main.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/custom/discover/overview/main.css">
+
+</html>
