@@ -1,0 +1,127 @@
+<div id="loadingIcon" style="display: none">
+	<div class="wrapper" style= "height: 200px;width: 200px;">
+		<img src="/custom/common/xhr/gear.gif" />
+	</div>
+</div>
+
+
+<!-- hidden div for marvin popup-->
+<div id="popup" class="popup-window" style="position: fixed; left:0px; top:0px; z-index:100000000000000000; visibility: hidden; opacity: 0;">
+	<div class="wrapper" >
+		<div id="title-bar"><input id="close" type="button" class="close-button" value="Done ×" style="margin-right: 100px;"></div>
+		<div id="sketchContainer" style="display: inline-block; background-color: white;">
+			<!--iframe id="sketchImg" src="/marvinjs/editor.html" ></iframe -->
+			
+		</div>
+	</div>
+</div>
+<div >
+	
+		<!-- form for NPA ID -->
+		<form style="margin: 0;" action="#" class="form-inline" method="get" id="explorecompounds">
+          	<div style="width: 100%;">
+              <label for="npaid" id="npalabel">NPA ID:</label>
+              <input type="text" name="npaid" onchange="npaIDFunc()" id="npaid" value="" placeholder="NPA123456"  autocomplete=off>
+			  
+			  <label for="compoundName" id="compNameLabel">Compound Name:</label>
+
+					<input class="typeahead twitter-typeahead" onchange="compNameFunction()" type="text" data-provide="typeahead" placeholder="Compound Name" name="compoundName" id="compoundName"  autocomplete=off>
+			  
+              
+			  
+              <input type="submit" name="btn-submit"  id="npasubmit" value="Submit" class="btn btn-primary" >
+			  <input type="button" id="btn-reset" value="Reset" class="btn btn-primary" onclick="resetForm()" style="height: 18px;">
+          </div>
+		</form>
+	
+
+	
+
+	<div class="explore_results" style="display:none;">
+		<div id="error_msg">	</div>
+		<h3 id="compound_title"></h3>
+		<div id="compound_info" style="display: flex;">
+			<div id="structure_container">
+				<table style="table-layout: fixed; width: 100%;">
+					<tr>
+						<th style="text-transform: uppercase;">Export Options</th>
+						<td>
+							<input type="button" value="PNG" id="cluster_link_button" class="btn btn-secondary" style="margin-right: 5px; width: 40px;" onclick = "downloadStructurePNG()">
+							<input type="button" value="MOL" id="molFileDownload" class="btn btn-secondary" style="margin-right: 5px; width: 40px;" onclick = "downloadMol()"> 
+							<input type="button" value="TSV" id="tsvFileDownload" class="btn btn-secondary" style="margin-right: 0px; width: 40px;" onclick = "downloadTsv()"> 
+						</td>
+					</tr>
+					<tr>
+						<th style="text-transform: uppercase;">Project Molecule to Global View</th>
+						<td>
+							<input type="button" value="See Global" id="global_link_button" class="btn btn-secondary" style="margin-right: 0px; width: 80px;">
+						</td>
+					</tr>
+				</table>
+				<span id="global_link" style="display: none;">
+                    
+                </span>  
+				<span>
+                    
+				</span>
+			</div>
+			<!--div class="spacer"></div -->
+			<div id="compound_info_table"></div>
+		</div>
+		<div id="lit_info">
+			<div id="reference_info"></div>
+			<div class="spacer"></div>
+			<div id="reassignment_info"></div>
+		</div>
+		<div id="no_result" style="display: none;"></div>
+		
+		<div id="isolationReference" class="reference" >
+			<div class="row-fluid">
+				<div class= "span12">
+					<h3 style="text-align: center;">Original Isolation Reference</h3>
+				</div>
+			</div>
+			<div class="row-fluid" style="display:flex;">
+				<div class= "backgroundColName" id="isoRefCitLabel">
+					<label>CITATION</label>
+				</div>
+				<div class= "backgroundValue" id="isoRefCitValue" style="margin-left: 0;">
+					<span id="citReference" ></span>
+				</div>
+			</div>
+			
+			
+			<div class="row-fluid" style="display:flex;">
+				<div class= "backgroundColName" id="isoRefDOILabel">
+					<label>DOI</label>
+				</div>
+				<div class= "backgroundValue" id="isoRefDOIValue" style="margin-left: 0;">
+					<span id="doiReference" ></span>
+				</div>
+			</div>
+		</div>
+		<div id="compReassignment" class="reassignment">
+		
+		</div>
+		<div id="totalSynthesis" class="sythesis">
+			
+		</div>
+	</div>
+	
+
+</div>
+<div id="enterDetails" style="display:none;">
+	<h3 style="text-align: center;">Please enter NPA ID or Compound Name to see more details</h3>
+	<img class="examImage" src = "/custom/explore/compounds/png/NPA000123_hw1000.png">
+</div>
+<div id="compNotPresentDiv" style="display: none;margin-top: 30px;padding-bottom: 10px;"><label style="font-weight: 600; color :red; margin-left: 30%;">Name does not match a single compound.</label><br><label style="font-weight: 600;">There are two main reasons why this may be true: </label><br><label style="display: inline;"> 1. This name is not in the Atlas. In this case try selecting a compound name from the pop-up list in the compound name search box. <br> 2. More than one compound in the Atlas has the same name. In this case, try searching the name in the basic search page, and click on the</label><label style="font-weight: 600;display: inline;"> NPAID </label>link in the results table for the compound you wish to view.</label></div>
+<!-- script -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> 
+<script src="/marvinjs/js/lib/rainbow/rainbow-custom.min.js"></script>
+<script src="/marvinjs/gui/lib/promise-1.0.0.min.js"></script>
+<script src="/marvinjs/js/marvinjslauncher.js"></script>
+<script type="text/javascript" src="/custom/common/xhr/bootstrapTypeahead.js"></script>
+
+<script type="text/javascript" src="/custom/common/xhr/test.js"></script>
+<script type="text/javascript" src="/custom/explore/compounds/compound.js"></script>
+<link rel="stylesheet" type="text/css" href="/custom/explore/compounds/compounds.css">
