@@ -68,7 +68,7 @@ biggestNodeInfo_query("#loadingIcon").then((response) => {
 
     var a= document.createElement('a');    a.innerHTML=response["biggest_node_id"];   a.title =response["biggest_cluster_id"];
 
-     a.href = "/joomla/index.php/explore/clusters#clusterID="+response["biggest_node_id"];
+     a.href = "/joomla/index.php/explore/nodes#nodeID="+response["biggest_node_id"];
      label.appendChild(a);
     jQuery('#biggestNodeCount').text(response["count_of_compounds"]);
 });
@@ -83,6 +83,73 @@ numberOfNodesBySize_query("#loadingIcon").then((response) => {
     }
 
     createLineGraph([sizeArr, countArr],"#chartNode", "Node Size","Number of Nodes");
+});
+var compWtArr = [];
+compMolWt_query("#loadingIcon").then((response) => {
+    var molWtArr = response;
+    var countArr = []; var count = 1; var compWt = parseInt(molWtArr[0]) + 20;  var beforeMolWt = parseInt(molWtArr[0]);
+    countArr.push("No of Compounds");
+    for(var i=1; i<molWtArr.length; i++){
+        if(compWt >= 2021)
+            break;        
+        else if(molWtArr[i] < compWt){
+            count++;
+        }        
+        else{
+         //   compWtArr.push(beforeMolWt+'-'+compWt);
+            compWtArr.push(beforeMolWt);
+            beforeMolWt = compWt;
+            compWt += 20;
+            compWt = parseInt(compWt.toFixed(4));
+            countArr.push(count);          
+            count = 1;
+        }
+    }
+//    createBarGraph([countArr], "#chartMolWt",compWtArr, "Number of Compounds");
+});
+function calcBinMolWt(molWtArr, minMolWt){
+    var countArr = []; var count = 1; var compWt = parseInt(minMolWt) + 20;  var beforeMolWt = parseInt(molWtArr[0]);
+  //  countArr.push("No of Compounds");
+    for(var i=1; i<molWtArr.length; i++){
+        if(compWt >= 2021)
+            break;        
+        else if(molWtArr[i] < compWt){
+            count++;
+        }        
+        else{
+         //   compWtArr.push(beforeMolWt+'-'+compWt);
+            compWtArr.push(beforeMolWt);
+            beforeMolWt = compWt;
+            compWt += 20;
+            compWt = parseInt(compWt.toFixed(4));
+            countArr.push(count);          
+            count = 1;
+        }
+    }
+    return countArr;    
+}
+
+compMolWtBac_Fungi_query("#loadingIcon").then((response) => {
+    var bacMolWtArr = []; var fungiMolWtArr = [];
+    for(var i=0; i<response.length; i++){
+        if(response[i][1] === 1)
+            bacMolWtArr.push(response[i][0]);
+        else
+            fungiMolWtArr.push(response[i][0]);
+    }
+    
+    var countBacArr = calcBinMolWt(bacMolWtArr, Math.min(parseInt(bacMolWtArr[0]),parseInt(fungiMolWtArr[0])));
+    var countFungArr = calcBinMolWt(fungiMolWtArr, Math.min(parseInt(bacMolWtArr[0]),parseInt(fungiMolWtArr[0])));
+    var originArr = [];
+    for(var i = 0; i < countBacArr.length; i++){
+        originArr.push(countBacArr[i] + countFungArr[i]);
+    }
+
+    countBacArr.unshift('Bacteria');
+    countFungArr.unshift('Fungus');
+    originArr.unshift('Total');
+ 
+    createBarGraph([countBacArr,countFungArr,originArr], "#chartMolWt",compWtArr, "Number of Compounds");
 });
 
 function createChart(chartType,columnsArray, divID, showLegend){
@@ -131,6 +198,59 @@ function createLineGraph(columnsArray, divID,xLabel, yLabel){
                 }                
             },
         },
+        bindto: divID
+    });
+}
+function createBarGraph(columnsArray, divID,categoryArr, yLabel){
+    var chart = c3.generate({
+        data: {
+            columns: columnsArray,
+            type: 'bar',
+            groups: [
+                ['Bacteria', 'Fungus', 'Total']
+            ]
+        },
+        axis: {
+            x: {
+                type: 'category',
+                categories: categoryArr,
+                tick: {
+                //    rotate: -30,
+                    multiline: false,
+                    culling: {
+                        max: 10 // the number of tick texts will be adjusted to less than this value
+                    }
+                },
+                label: 
+                {
+                    text: "Molecular Weight",
+                    position: 'outer-center'
+                } 
+            //    height: 100
+            },
+            y: {
+                label: 
+                {
+                    text: yLabel,
+                    position: 'outer-middle'
+                }                
+            }
+        },
+        bar: {
+            width: {
+                ratio: 0.6
+            }            
+        },
+        // legend: {
+        //     show: false
+        // },
+        tooltip: {
+            format: {
+                title: function (d) { 
+                    return  compWtArr[d] + "-"+ (compWtArr[d]+20);
+                }
+            }
+        },       
         bindto: divID
     });
 }
